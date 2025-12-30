@@ -1,5 +1,4 @@
-# LOGO
-[![VenomPot Logo](https://raw.githubusercontent.com/WalaEddine01/VenomPot/assets/images/honeypy-logo-white.png)](https://github.com/WalaEddine01/VenomPot)
+[![VenomPot Logo](https://github.com/WalaEddine01/VenomPotassets/images/honeypy-logo-white.png)](https://github.com/WalaEddine01/VenomPot)
 # VenomPot — HTTP Honeypot & Dashboard
 
 Lightweight HTTP honeypot and local dashboard for collecting and inspecting HTTP activity. This repository contains a Flask-based honeypot service, a Dash dashboard to visualize collected logs, parsers for the logs and several decoy templates and payloads used by the honeypot.
