@@ -1,0 +1,1 @@
+event=http_request client_ip=127.0.0.1 method=GET user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36" path=/dashboard ts=2025-12-30T22:36:49Z OS=Linux_6.6.87.2-microsoft-standard-WSL2 
