@@ -114,7 +114,7 @@ def refresh_dashboard(_):
             x="client_ip",
             y="count",
             title="Top Attacker IPs",
-            color_discrete_sequence=["#77bb35"],
+            color_discrete_sequence=["#77bb35ؤ"],
         )
     else:
         fig = px.bar(
