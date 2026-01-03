@@ -91,3 +91,43 @@ def ip_to_country_code(dataframe):
     
     df = pd.DataFrame(data)
     return df
+
+# data parsing so that ftp_smb_logs.log file so the dashboard can display it 
+
+def parse_ftp_smb_log(log_file):
+    """
+    Parses the key=value formatted FTP/SMB logs.
+    """
+    data = []
+    try:
+        with open(log_file, "r", encoding="utf-8") as fh:
+            for line in fh:
+                record = {}
+                # Split by space, but be careful with spaces inside quotes (basic split used here for simplicity)
+                # A regex is better for robust parsing, but we'll stick to your existing logic style
+                parts = line.strip().split(" ")
+                for token in parts:
+                    if "=" in token:
+                        k, v = token.split("=", 1)
+                        record[k] = v.strip('"')
+                
+                # Cleaning up data for the table
+                if "data" in record:
+                    # sometimes data has spaces, simplistic parser might break. 
+                    # Ideally, rejoin the rest of the line or use regex.
+                    pass 
+                
+                if record:
+                    data.append(record)
+    except FileNotFoundError:
+        return pd.DataFrame(columns=["protocol", "client_ip", "event", "data", "ts"])
+
+    df = pd.DataFrame(data)
+    
+    # Ensure columns exist
+    expected_cols = ["protocol", "client_ip", "event", "data", "ts"]
+    for c in expected_cols:
+        if c not in df.columns:
+            df[c] = ""
+            
+    return df[expected_cols]

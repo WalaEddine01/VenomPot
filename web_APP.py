@@ -3,6 +3,7 @@ import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash_bootstrap_templates import load_figure_template
 from dashboard_data_parser import parse_http_requests_log
+from dashboard_data_parser import parse_ftp_smb_log, parse_http_requests_log
 from pathlib import Path
 import pandas as pd
 
@@ -12,6 +13,7 @@ import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent
 LOG_FILE = BASE_DIR / "logs" / "http_logs.log"
+FTP_LOG_FILE = BASE_DIR / "logs" / "ftp_smb_logs.log"
 
 # =========================
 # DASH SETUP
