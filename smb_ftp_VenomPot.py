@@ -102,12 +102,19 @@ def handle_smb_client(client_socket, address):
     log_event("SMB", ip, "Connection established")
 
     try:
-        # Receive the Negotiate Protocol Request
-        data = client_socket.recv(1024)
+        # # Receive the Negotiate Protocol Request
+        # data = client_socket.recv(1024)
         
-        # Convert bytes to hex for analysis if needed, or just log length
-        hex_dump = data.hex()[:50] # Log first 50 bytes hex
-        log_event("SMB", ip, f"Header_Hex={hex_dump}", event_type="negotiate")
+        # # Convert bytes to hex for analysis if needed, or just log length
+        # hex_dump = data.hex()[:50] # Log first 50 bytes hex
+        # log_event("SMB", ip, f"Header_Hex={hex_dump}", event_type="negotiate")
+        # New code to capture the full readable message
+        data = client_socket.recv(1024)
+        # Decode bytes to string, ignoring characters that aren't readable text
+        readable_data = data.decode('utf-8', errors='ignore').strip()
+
+        # Log the full message
+        log_event("SMB", ip, readable_data, event_type="payload")
 
         # We don't respond with valid SMB packets to avoid helping them.
         # We just hold the connection briefly or close it.

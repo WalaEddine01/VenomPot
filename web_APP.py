@@ -2,135 +2,87 @@ from dash import Dash, html, dash_table, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash_bootstrap_templates import load_figure_template
-from dashboard_data_parser import parse_http_requests_log
-from dashboard_data_parser import parse_ftp_smb_log, parse_http_requests_log
+from dashboard_data_parser import parse_http_requests_log, parse_ftp_smb_log
 from pathlib import Path
 import pandas as pd
 
 # =========================
 # PATH CONFIGURATION
 # =========================
-
 BASE_DIR = Path(__file__).resolve().parent
-LOG_FILE = BASE_DIR / "logs" / "http_logs.log"
-FTP_LOG_FILE = BASE_DIR / "logs" / "ftp_smb_logs.log"
+HTTP_LOGS = BASE_DIR / "logs" / "http_logs.log"
+SMB_FTP_LOGS = BASE_DIR / "logs" / "ftp_smb_logs.log"
 
 # =========================
 # DASH SETUP
 # =========================
-
 load_figure_template(["cyborg"])
 dbc_css = "https://cdn.jsdelivr.net/gh/AnnMarieW/dash-bootstrap-templates@V1.0.4/dbc.min.css"
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.CYBORG, dbc_css])
-app.title = "HONEYPY"
+app.title = "VENOMPOT DASHBOARD"
 
 # =========================
 # LAYOUT
 # =========================
+app.layout = dbc.Container([
+    dcc.Interval(id="refresh", interval=3000, n_intervals=0),
 
-app.layout = dbc.Container(
-    [
-        # Interval for live refresh
-        dcc.Interval(
-            id="refresh",
-            interval=3000,
-            n_intervals=0,
-        ),
+    html.H1("VenomPot Threat Intel", style={"textAlign": "center", "marginTop": "20px", "color": "#8dd143"}),
 
-        # Logo
-        html.Div(
-            html.Img(
-                src="assets/images/honeypy-logo-white.png",
-                style={"height": "25%", "width": "25%"},
-            ),
-            style={"textAlign": "center"},
-        ),
+    dbc.Row([
+        dbc.Col(dcc.Graph(id="ip-bar"), width=12),
+    ]),
 
-        html.H3(
-            "HTTP Honeypot Data",
-            style={
-                "textAlign": "center",
-                "fontFamily": "Consolas",
-                "fontWeight": "bold",
-            },
-        ),
+    html.Hr(),
+    html.H3("HTTP / WordPress Attack Traffic", style={"color": "#8dd143"}),
+    dash_table.DataTable(
+        id="http-table",
+        page_size=10,
+        style_cell={"textAlign": "left", "backgroundColor": "#111", "color": "#8dd143"},
+        style_header={"backgroundColor": "#222", "fontWeight": "bold"}
+    ),
 
-        # Bar chart
-        dbc.Row(
-            [
-                dbc.Col(
-                    dcc.Graph(id="ip-bar"),
-                    width=6,
-                ),
-            ],
-            justify="center",
-        ),
-
-        # Unified data table
-        dash_table.DataTable(
-            id="http-table",
-            page_size=15,
-            style_cell={
-                "textAlign": "left",
-                "color": "#8dd143",
-                "backgroundColor": "#111111",
-            },
-            style_header={
-                "fontWeight": "bold",
-                "backgroundColor": "#222222",
-            },
-        ),
-    ],
-    fluid=True,
-)
+    html.Br(),
+    html.H3("SMB & FTP Connection Logs", style={"color": "#8dd143"}),
+    dash_table.DataTable(
+        id="smb-ftp-table",
+        page_size=10,
+        style_cell={"textAlign": "left", "backgroundColor": "#111", "color": "#8dd143"},
+        style_header={"backgroundColor": "#222", "fontWeight": "bold"}
+    ),
+], fluid=True)
 
 # =========================
 # CALLBACK
 # =========================
-
 @app.callback(
     Output("http-table", "data"),
     Output("http-table", "columns"),
+    Output("smb-ftp-table", "data"),
+    Output("smb-ftp-table", "columns"),
     Output("ip-bar", "figure"),
     Input("refresh", "n_intervals"),
 )
 def refresh_dashboard(_):
-    df = parse_http_requests_log(LOG_FILE)
+    # Fetch Data
+    df_http = parse_http_requests_log(HTTP_LOGS)
+    df_smb = parse_ftp_smb_log(SMB_FTP_LOGS)
 
-    # ---------- TABLE ----------
-    columns = [{"name": c, "id": c} for c in df.columns]
-    data = df.to_dict("records")
-
-    # ---------- BAR CHART ----------
-    if not df.empty and "client_ip" in df.columns:
-        vc = df["client_ip"].value_counts().head(10)
-
-        top_ips = pd.DataFrame({
-            "client_ip": vc.index,
-            "count": vc.values,
-        })
-
-        fig = px.bar(
-            top_ips,
-            x="client_ip",
-            y="count",
-            title="Top Attacker IPs",
-            color_discrete_sequence=["#77bb35ؤ"],
-        )
+    # Tables
+    cols_http = [{"name": c, "id": c} for c in df_http.columns]
+    cols_smb = [{"name": c, "id": c} for c in df_smb.columns]
+    
+    # Combined Bar Chart (Top IPs across all services)
+    combined_ips = pd.concat([df_http['client_ip'], df_smb['client_ip']]) if not df_http.empty or not df_smb.empty else pd.Series()
+    if not combined_ips.empty:
+        vc = combined_ips.value_counts().head(10)
+        fig = px.bar(x=vc.index, y=vc.values, title="Total Attacks by IP", labels={'x':'IP Address', 'y':'Count'})
+        fig.update_layout(template="cyborg")
     else:
-        fig = px.bar(
-            pd.DataFrame(columns=["client_ip", "count"]),
-            x="client_ip",
-            y="count",
-            title="Top Attacker IPs",
-        )
+        fig = px.bar(title="No Data Yet")
 
-    return data, columns, fig
-
-# =========================
-# RUN
-# =========================
+    return df_http.to_dict("records"), cols_http, df_smb.to_dict("records"), cols_smb, fig
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

@@ -40,9 +40,9 @@ if __name__ == "__main__":
 
         # Start FTP/SMB
         if args.ftpsmb:
-            print("[-] Starting FTP & SMB Honeypots (Root privileges usually required for ports 21/445)...")
+            print("[-] Starting FTP & SMB Honeypots (Root privileges usually required for ports 21/4445)...")
             # We run this in a separate thread so it doesn't block
-            t_fs = threading.Thread(target=run_ftp_smb_VenomPot, args=(21, 445))
+            t_fs = threading.Thread(target=run_ftp_smb_VenomPot, args=(21, 4445))
             t_fs.daemon = True
             t_fs.start()
             threads.append(t_fs)
