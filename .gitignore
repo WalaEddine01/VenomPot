@@ -5,3 +5,6 @@ __pycache__/
 .env
 server.key
 server.key.pub
+ftp_smb_logs.log
+http_logs.log
+ssh_logs.log

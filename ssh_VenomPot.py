@@ -25,7 +25,7 @@ logging_format = logging.Formatter("%(asctime)s - %(message)s")
 
 venom_logger = logging.getLogger("VenomSSH")
 venom_logger.setLevel(logging.INFO)
-venom_handler = RotatingFileHandler("logs/ssh_audits.log", maxBytes=200000, backupCount=5)
+venom_handler = RotatingFileHandler("logs/ssh_logs.log", maxBytes=200000, backupCount=5)
 venom_handler.setFormatter(logging_format)
 venom_logger.addHandler(venom_handler)
 
@@ -235,24 +235,62 @@ def handle_client(client, address):
         except: pass
         client.close()
 
-def VenomPot():
-    # Ensure key exists
-    if not list(map(str, sorted(paramiko.util.list_keys()))): # rough check
-        # In reality you must generate a key file beforehand:
-        # ssh-keygen -f server.key -N ""
-        pass
+# def run_ssh_VenomPot():
+#     # Ensure key exists
+#     if not list(map(str, sorted(paramiko.util.list_keys()))): # rough check
+#         # In reality you must generate a key file beforehand:
+#         # ssh-keygen -f server.key -N ""
+#         pass
+
+#     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+#     sock.bind((LISTEN_ADDR, LISTEN_PORT))
+#     sock.listen(100)
+#     print(f"[+] SSH Honeypot listening on {LISTEN_PORT} (User: {USERNAME})")
+
+#     while True:
+#         client, addr = sock.accept()
+#         t = threading.Thread(target=handle_client, args=(client, addr))
+#         t.daemon = True
+#         t.start()
+
+# if __name__ == "__main__":
+#     run_ssh_VenomPot()
+def run_ssh_VenomPot(port=2223, username="user", password="password"):
+    # Ensure we use the arguments provided
+    global USERNAME, PASSWORD
+    USERNAME = username
+    PASSWORD = password
+
+    # Ensure key exists (Basic check)
+    try:
+        # In a real scenario, check if server.key exists; if not, you might want to raise an error
+        # or generate one programmatically.
+        pass 
+    except Exception as e:
+        print(f"[!] SSH Key Error: {e}")
+        return
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind((LISTEN_ADDR, LISTEN_PORT))
-    sock.listen(100)
-    print(f"[+] SSH Honeypot listening on {LISTEN_PORT} (User: {USERNAME})")
+    
+    try:
+        sock.bind((LISTEN_ADDR, port))
+        sock.listen(100)
+        print(f"[+] SSH Honeypot listening on {port} (User: {username})")
+    except Exception as e:
+        print(f"[!] Could not start SSH server on port {port}: {e}")
+        return
 
     while True:
-        client, addr = sock.accept()
-        t = threading.Thread(target=handle_client, args=(client, addr))
-        t.daemon = True
-        t.start()
+        try:
+            client, addr = sock.accept()
+            t = threading.Thread(target=handle_client, args=(client, addr))
+            t.daemon = True
+            t.start()
+        except KeyboardInterrupt:
+            break
 
 if __name__ == "__main__":
-    VenomPot()
+    # Default execution if run standalone
+    run_ssh_VenomPot(LISTEN_PORT, USERNAME, PASSWORD)
