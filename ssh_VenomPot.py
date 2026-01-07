@@ -19,7 +19,7 @@ SSH_BANNER = "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6"
 HOST_KEY = paramiko.RSAKey(filename="server.key") # Generate this using: ssh-keygen -t rsa -f server.key
 
 LISTEN_ADDR = "0.0.0.0"
-LISTEN_PORT = 2223
+LISTEN_PORT = 21
 
 USERNAME = "user"
 PASSWORD = "password"
@@ -205,7 +205,7 @@ def handle_client(client, address):
 
 # if __name__ == "__main__":
 #     run_ssh_VenomPot()
-def run_ssh_VenomPot(port=2223, username="user", password="password"):
+def run_ssh_VenomPot(port=21, username="user", password="password"):
     # Ensure we use the arguments provided
     global USERNAME, PASSWORD
     USERNAME = username
