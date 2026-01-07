@@ -5,6 +5,10 @@ __pycache__/
 .env
 server.key
 server.key.pub
+*.log
+logs
+errors
 ftp_smb_logs.log
 http_logs.log
 ssh_logs.log
+ssh_errors_2026-01-07.log

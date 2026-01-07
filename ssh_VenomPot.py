@@ -5,6 +5,11 @@ from logging.handlers import RotatingFileHandler
 import paramiko
 import time
 import random
+import os
+import traceback
+from datetime import datetime
+# SILENCE PARAMIKO INTERNAL LOGGING
+logging.getLogger("paramiko").setLevel(logging.CRITICAL)
 # NEW IMPORT
 from virtual_fs import VirtualFS
 
@@ -209,30 +214,76 @@ class Server(paramiko.ServerInterface):
 
     def check_channel_pty_request(self, channel, term, width, height, pixelwidth, pixelheight, modes):
         return True
+# ===================== ERROR LOGGING CONFIG =====================
+ERROR_LOG_DIR = "logs/errors"
+if not os.path.exists(ERROR_LOG_DIR):
+    os.makedirs(ERROR_LOG_DIR)
+
+def log_error_to_file(client_ip, exception_msg):
+    """Stores full traceback in a dated file for debugging."""
+    date_str = datetime.now().strftime("%Y-%m-%d")
+    timestamp = datetime.now().strftime("%H:%M:%S")
+    log_file = os.path.join(ERROR_LOG_DIR, f"ssh_errors_{date_str}.log")
+    
+    with open(log_file, "a", encoding="utf-8") as f:
+        f.write(f"--- ERROR AT {timestamp} | IP: {client_ip} ---\n")
+        f.write(f"Message: {exception_msg}\n")
+        f.write(traceback.format_exc())
+        f.write("-" * 50 + "\n\n")
+        
+# ===================== HANDLE CLIENT =====================
 
 def handle_client(client, address):
     client_ip = address[0]
     print(f"[+] SSH Connection from {client_ip}")
+    transport = None
+    
     try:
         transport = paramiko.Transport(client)
         transport.local_version = SSH_BANNER
         transport.add_server_key(HOST_KEY)
+        
         server = Server(client_ip, USERNAME, PASSWORD)
+        
         try:
+            # start_server starts a background thread. 
+            # If it fails, our CRITICAL log level silences the default output.
             transport.start_server(server=server)
-        except paramiko.SSHException:
+        except Exception as e:
+            error_str = str(e)
+            # Identify the tool for your main audit log
+            tool = "Scanner/Bruteforce"
+            if "MessageOrderError" in error_str or "34" in error_str:
+                tool = "Hydra/Medusa"
+            elif "banner" in error_str.lower() or not error_str:
+                tool = "Nmap/ZGrab"
+            
+            # Log clean summary to main audit log
+            venom_logger.info(f"SCAN | {client_ip} | Tool: {tool} | Msg: {error_str}")
+            
+            # Print ONLY the clean summary to terminal
+            print(f"[*] SSH Automated Attack detected from {client_ip} (Tool: {tool})")
+            
+            # Save full technical traceback to your dated error log
+            log_error_to_file(client_ip, error_str)
             return
 
+        # Wait for the client to request a channel
         channel = transport.accept(20)
-        if channel is None: return
+        if channel is None:
+            return
 
         emulated_shell(channel, client_ip)
 
     except Exception as e:
-        print(f"[!] SSH Error: {e}")
+        # Catch unexpected session errors silently
+        log_error_to_file(client_ip, str(e))
     finally:
-        try: transport.close()
-        except: pass
+        try:
+            if transport:
+                transport.close()
+        except:
+            pass
         client.close()
 
 # def run_ssh_VenomPot():
