@@ -37,154 +37,51 @@ venom_logger.addHandler(venom_handler)
 # ===================== FAKE SHELL =====================
 
 def emulated_shell(channel, client_ip):
-    # Initialize the Virtual Filesystem for this specific session
-    vfs = VirtualFS(user=USERNAME)
+    # Initialize VFS
+    vfs = VirtualFS(user=USERNAME) 
     
-    prompt_base = f"{USERNAME}@ubuntu"
-    
-    def get_prompt():
-        # returns user@ubuntu:~/dir$ 
-        cwd = vfs.get_pwd()
-        if cwd.startswith(f"/home/{USERNAME}"):
-            cwd = cwd.replace(f"/home/{USERNAME}", "~")
-        return f"\r\n{prompt_base}:{cwd}$ ".encode()
-
-    def slow_send(data_str):
-        # Simulate network latency/typing
-        channel.send(data_str.replace("\n", "\r\n").encode())
-
-    # Initial Welcome Message
-    channel.send(b"Welcome to Ubuntu 22.04.3 LTS (GNU/Linux 5.15.0-91-generic x86_64)\r\n\r\n")
-    channel.send(b" * Documentation:  https://help.ubuntu.com\r\n")
-    channel.send(b" * Management:     https://landscape.canonical.com\r\n")
-    channel.send(b" * Support:        https://ubuntu.com/advantage\r\n\r\n")
-    channel.send(f"Last login: {time.ctime()} from {client_ip}\r\n".encode())
-    
-    channel.send(get_prompt())
-
-    command_buffer = b""
-
     while True:
-        try:
+        # 1. Get the dynamic prompt from VFS
+        prompt = vfs.get_prompt() 
+        
+        # 2. Send prompt to attacker
+        channel.send(prompt)
+        
+        command = ""
+        while True:
             char = channel.recv(1)
-            if not char:
+            if not char: break # Connection closed
+            char = char.decode("utf-8", errors="ignore")
+            
+            # Simple Enter Key
+            if char == "\r":
+                channel.send("\r\n")
                 break
-        except:
-            break
-
-        # ENTER KEY
-        if char in (b"\r", b"\n"):
-            channel.send(b"\r\n")
-            cmd_line = command_buffer.strip().decode("utf-8", errors="ignore")
-            command_buffer = b""
-
-            # Log the command
-            if cmd_line:
-                venom_logger.info(f"CMD | {client_ip} | {cmd_line}")
-
-            parts = cmd_line.split()
-            if not parts:
-                channel.send(get_prompt())
+                
+            # Basic Backspace support
+            if char == '\x7f': 
+                if len(command) > 0:
+                    command = command[:-1]
+                    channel.send("\b \b")
                 continue
-
-            cmd = parts[0]
-            args = parts[1:] if len(parts) > 1 else []
-            arg_str = parts[1] if len(parts) > 1 else ""
-
-            # ---- COMMAND HANDLER ----
-            
-            if cmd == "exit" or cmd == "logout":
-                channel.send(b"logout\r\n")
-                break
-
-            elif cmd == "pwd":
-                slow_send(vfs.get_pwd())
-
-            elif cmd == "cd":
-                target = arg_str if arg_str else f"/home/{USERNAME}"
-                err = vfs.cd(target)
-                if err:
-                    slow_send(err)
-
-            elif cmd == "ls":
-                # Handle flags roughly
-                target = "."
-                show_hidden = False
-                long_fmt = False
                 
-                for a in args:
-                    if a.startswith("-"):
-                        if "l" in a: long_fmt = True
-                        if "a" in a: show_hidden = True
-                    else:
-                        target = a
-                
-                if long_fmt:
-                    res = vfs.ls_l(target)
-                else:
-                    res = vfs.ls(target)
-                slow_send(res)
-
-            elif cmd == "mkdir":
-                if not arg_str:
-                    slow_send("mkdir: missing operand")
-                else:
-                    err = vfs.mkdir(arg_str)
-                    if err: slow_send(err)
-
-            elif cmd == "rm":
-                if not arg_str:
-                    slow_send("rm: missing operand")
-                else:
-                    err = vfs.rm(arg_str)
-                    if err: slow_send(err)
+            # Echo and build command
+            channel.send(char)
+            command += char
             
-            elif cmd == "touch":
-                if arg_str:
-                    vfs.touch(arg_str)
-
-            elif cmd == "cat":
-                if not arg_str:
-                    pass # cat waits for stdin, ignore for pot
-                else:
-                    res = vfs.cat(arg_str)
-                    slow_send(res)
-
-            elif cmd == "whoami":
-                slow_send(USERNAME)
-
-            elif cmd == "id":
-                slow_send(f"uid=1000({USERNAME}) gid=1000({USERNAME}) groups=1000({USERNAME})")
-
-            elif cmd == "uname":
-                slow_send("Linux")
-
-            elif cmd == "history":
-                slow_send("1  ls\n2  exit")
-
-            elif cmd == "clear":
-                channel.send(b"\033[2J\033[H")
-
-            # Default catch-all
-            else:
-                slow_send(f"{cmd}: command not found")
-
-            channel.send(get_prompt())
-            continue
-
-        # BACKSPACE HANDLING
-        if char in (b"\x7f", b"\b"):
-            if len(command_buffer) > 0:
-                command_buffer = command_buffer[:-1]
-                # Erase character from terminal: Move back, Space, Move Back
-                channel.send(b"\b \b")
-            continue
-
-        # Simple Echo
-        command_buffer += char
-        channel.send(char)
-
-    channel.close()
+        command = command.strip()
+        if command == "exit": 
+            break
+        
+        # 3. Execute and get response
+        response = vfs.execute_command(command)
+        
+        # 4. Send response if exists
+        if response:
+            channel.send(response.replace("\n", "\r\n") + "\r\n")
+            
+        # Log it
+        venom_logger.info(f"CMD | {client_ip} | {command}")
 
 # ===================== SSH SERVER SETUP =====================
 
@@ -265,7 +162,8 @@ def handle_client(client, address):
             print(f"[*] SSH Automated Attack detected from {client_ip} (Tool: {tool})")
             
             # Save full technical traceback to your dated error log
-            log_error_to_file(client_ip, error_str)
+            # log_error_to_file(client_ip, error_str)
+            emulated_shell(channel, client_ip, server.username)
             return
 
         # Wait for the client to request a channel

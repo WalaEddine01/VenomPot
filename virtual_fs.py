@@ -1,359 +1,447 @@
 import json
-import copy
 import os
+import copy
+import time
 import random
 from datetime import datetime
 
+# Default configuration if JSON is missing
+DEFAULT_FS = {
+    "name": "", "type": "dir", "perm": "drwxr-xr-x", "user": "root", "group": "root",
+    "size": 4096, "modified": "Jan 1 10:00", "children": {
+        "home": {"type": "dir", "perm": "drwxr-xr-x", "user": "root", "group": "root", "size": 4096, "children": {
+            "admin": {"type": "dir", "perm": "drwxr-x---", "user": "admin", "group": "admin", "size": 4096, "children": {}},
+            "user": {"type": "dir", "perm": "drwxr-x---", "user": "user", "group": "user", "size": 4096, "children": {}}
+        }},
+        "etc": {"type": "dir", "perm": "drwxr-xr-x", "user": "root", "group": "root", "size": 4096, "children": {
+            "hostname": {"type": "file", "perm": "-rw-r--r--", "user": "root", "group": "root", "size": 12, "content": "ubuntu-server"}
+        }},
+        "bin": {"type": "dir", "perm": "drwxr-xr-x", "user": "root", "group": "root", "size": 4096, "children": {}}
+    }
+}
+
 class VirtualFS:
     def __init__(self, user="user", json_file="FileSystemUbuntu2204.json"):
-        # Load the base filesystem from the JSON file
-        try:
-            # Assumes the JSON file is in the same directory
-            base_path = os.path.dirname(os.path.abspath(__file__))
-            file_path = os.path.join(base_path, json_file)
-            
-            with open(file_path, 'r', encoding='utf-8') as f:
-                self.base_fs = json.load(f)
-        except FileNotFoundError:
-            print(f"[!] Warning: {json_file} not found. Using empty root.")
-            self.base_fs = {"name": "", "type": "dir", "children": {}}
-        except Exception as e:
-            print(f"[!] Error loading JSON: {e}")
-            self.base_fs = {"name": "", "type": "dir", "children": {}}
-
-        # Create a session-specific copy so one attacker doesn't affect another
-        self.fs = copy.deepcopy(self.base_fs)
+        self.json_file = json_file
         self.user = user
-        # Start in /home/user
-        self.cwd = ["home", "user"]
+        self.hostname = "ubuntu-server"
         self.start_time = datetime.now()
+        
+        # Load FS
+        self.fs = self._load_fs()
+        
+        # Ensure the user's home directory actually exists in the dict
+        if "home" in self.fs["children"]:
+            if self.user not in self.fs["children"]["home"]["children"]:
+                # Dynamically create the home folder if missing
+                self.fs["children"]["home"]["children"][self.user] = {
+                    "type": "dir", "perm": "drwxr-x---", "user": self.user, 
+                    "group": self.user, "size": 4096, 
+                    "modified": "Jan 1 10:00", "children": {}
+                }
+        
+        self.cwd = ["home", self.user]
+        self.old_pwd = self.cwd.copy()
+        
+        # State
+        self.cwd = ["home", self.user] # Current Working Directory (list of parts)
+        self.old_pwd = self.cwd.copy() # For 'cd -'
+        
+        # Mock Package Database
+        self.installed_packages = {"nano", "vim", "git", "curl", "wget", "python3"}
 
-    def get_pwd(self):
+    def _load_fs(self):
+        if os.path.exists(self.json_file):
+            try:
+                with open(self.json_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"[!] JSON Load Error: {e}")
+        return copy.deepcopy(DEFAULT_FS)
+
+    def _save_fs(self):
+        """Persist changes to the real JSON file immediately."""
+        try:
+            with open(self.json_file, 'w', encoding='utf-8') as f:
+                json.dump(self.fs, f, indent=2)
+        except Exception as e:
+            print(f"[!] JSON Save Error: {e}")
+
+    # ================= PATH RESOLUTION =================
+
+    def get_pwd_str(self):
+        if not self.cwd: return "/"
         return "/" + "/".join(self.cwd)
 
-    def _resolve_node(self, path_str):
+    def get_prompt(self):
         """
-        Navigates the internal dictionary tree.
+        Returns the clean prompt string. 
+        Format: user@hostname:~/current/dir$ 
+        """
+        path_str = self.get_pwd_str()
+        home = f"/home/{self.user}"
+        if path_str.startswith(home):
+            path_str = path_str.replace(home, "~", 1)
+        
+        # Only return the suffix part so you can format it in the main loop
+        return f"{self.user}@{self.hostname}:{path_str}$ "
+
+    def _resolve_node(self, path_str, parent_only=False):
+        """
+        Navigates the dictionary tree.
+        path_str: The path to resolve.
+        parent_only: If True, returns the parent node of the target.
         Returns: (parent_node, target_name, target_node)
         """
-        if not path_str:
+        if path_str == "/" and not parent_only:
             return None, "", self.fs
-            
-        parts = []
-        # Handle absolute vs relative paths
+
+        # 1. Determine start point
         if path_str.startswith("/"):
             parts = [p for p in path_str.split("/") if p]
-            current_path = [] # Start at root
+            cursor_path = [] # Root
+        elif path_str.startswith("~"):
+            parts = [p for p in path_str.replace("~", f"home/{self.user}").split("/") if p]
+            cursor_path = []
         else:
             parts = [p for p in path_str.split("/") if p]
-            current_path = self.cwd.copy() # Start at CWD
+            cursor_path = self.cwd.copy()
 
-        # Resolve ".." and "."
-        final_path_stack = []
-        for p in current_path + parts:
-            if p == ".": 
-                continue
+        # 2. Resolve . and ..
+        final_stack = []
+        for p in cursor_path + parts:
+            if p == ".": continue
             elif p == "..":
-                if final_path_stack: final_path_stack.pop()
+                if final_stack: final_stack.pop()
             else:
-                final_path_stack.append(p)
+                final_stack.append(p)
 
-        # Traverse the JSON dict
+        # 3. Handle parent_only request (pop the last item)
+        target_name = ""
+        if parent_only:
+            if not final_stack: return None, "", self.fs # Root has no parent we can edit easily here
+            target_name = final_stack.pop()
+        
+        # 4. Traverse
         cursor = self.fs
         parent = None
-        target_name = ""
         
-        # Root case
-        if not final_path_stack:
-            return None, "", self.fs
-
-        for part in final_path_stack:
+        for part in final_stack:
             if "children" in cursor and part in cursor["children"]:
                 parent = cursor
-                target_name = part
                 cursor = cursor["children"][part]
             else:
-                return None, None, None # Not found
-        
-        return parent, target_name, cursor
+                return None, None, None # Invalid path
 
-    # ================= COMMAND HANDLER =================
+        if parent_only:
+            return cursor, target_name, cursor.get("children", {}).get(target_name)
+        
+        # Navigate one last step if we are looking for a child of what we resolved
+        return parent, final_stack[-1] if final_stack else "", cursor
+
+    # ================= COMMAND DISPATCHER =================
 
     def execute_command(self, cmd_line):
-        """
-        Central dispatcher for all shell commands.
-        """
-        if not cmd_line or not cmd_line.strip():
-            return ""
-
+        if not cmd_line or not cmd_line.strip(): return ""
+        
+        # Handle simple piping/redirection placeholders (stub logic)
+        if ">" in cmd_line:
+            cmd_line = cmd_line.split(">")[0].strip()
+        
         parts = cmd_line.strip().split()
         cmd = parts[0]
         args = parts[1:]
-        arg1 = args[0] if len(args) > 0 else ""
+        
+        # --- File & Dir Management ---
+        if cmd == "ls": return self.do_ls(args)
+        if cmd == "cd": return self.do_cd(args)
+        if cmd == "pwd": return self.get_pwd_str()
+        if cmd == "mkdir": return self.do_mkdir(args)
+        if cmd == "rmdir": return self.do_rmdir(args)
+        if cmd == "rm": return self.do_rm(args)
+        if cmd == "cp": return self.do_cp(args)
+        if cmd == "mv": return self.do_mv(args)
+        if cmd == "touch": return self.do_touch(args)
+        
+        # --- Viewing & Editing ---
+        if cmd == "cat": return self.do_cat(args)
+        if cmd in ["head", "tail"]: return self.do_head_tail(cmd, args)
+        if cmd in ["less", "more"]: return self.do_cat(args) # Simpler for now
+        if cmd in ["nano", "vim", "vi"]: return f"\n[!] Opened {args[0] if args else 'file'}. (Editor simulation mode: Press Ctrl+X to exit)"
 
-        # --- Filesystem Operations ---
-        if cmd == "ls": 
-            return self.ls(arg1 if arg1 else ".")
-        if cmd == "cd": 
-            return self.cd(arg1 if arg1 else "~")
-        if cmd == "pwd": 
-            return self.get_pwd()
-        if cmd == "cat": 
-            return self.cat(arg1)
-        if cmd == "mkdir": 
-            return self.mkdir(arg1)
-        if cmd == "rm": 
-            return self.rm(arg1)
-        if cmd == "touch": 
-            return self.touch(arg1)
-        if cmd == "cp":
-            return "cp: missing destination file operand after '" + arg1 + "'" if len(args) < 2 else "" # Stub
-        if cmd == "mv":
-            return "mv: missing destination file operand after '" + arg1 + "'" if len(args) < 2 else "" # Stub
-        if cmd in ["head", "tail", "less", "grep"]:
-            # Basic file read simulation for these tools
-            content = self.cat(arg1)
-            if "No such file" in content: return content
-            lines = content.split('\n')
-            if cmd == "head": return "\n".join(lines[:10])
-            if cmd == "tail": return "\n".join(lines[-10:])
-            return content # less/grep return full for now
-
-        # --- System Identity ---
+        # --- Permissions & Groups ---
+        if cmd == "chmod": return self.do_chmod(args)
+        if cmd == "chown": return "" # Fake success
+        if cmd == "chgrp": return "" # Fake success
+        
+        # --- System Info ---
+        if cmd == "uname": return "Linux ubuntu-server 5.15.0-91-generic x86_64 GNU/Linux" if "-a" in args else "Linux"
+        if cmd == "hostname": return self.hostname
+        if cmd == "uptime": return self.do_uptime()
         if cmd == "whoami": return self.user
-        if cmd == "id": return f"uid=1000({self.user}) gid=1000({self.user}) groups=1000({self.user}),27(sudo)"
-        if cmd == "hostname": return "ubuntu-server"
-        if cmd == "uname": 
-            if "-a" in args: return "Linux ubuntu-server 5.15.0-91-generic #101-Ubuntu SMP x86_64 GNU/Linux"
-            return "Linux"
-        if cmd == "uptime":
-             delta = datetime.now() - self.start_time
-             return f" {datetime.now().strftime('%H:%M:%S')} up {str(delta).split('.')[0]},  1 user,  load average: 0.00, 0.01, 0.05"
-
-        # --- Network Tools ---
-        if cmd in ["ifconfig", "ip"]:
-            return """eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-        inet 192.168.1.34  netmask 255.255.255.0  broadcast 192.168.1.255
-        inet6 fe80::a00:27ff:fe4e:66a1  prefixlen 64  scopeid 0x20<link>
-        ether 08:00:27:4e:66:a1  txqueuelen 1000  (Ethernet)
-        RX packets 5623  bytes 4561230 (4.5 MB)
-        TX packets 4120  bytes 321456 (321.4 KB)
-
-lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        inet6 ::1  prefixlen 128  scopeid 0x10<host>"""
+        if cmd == "id": return f"uid=1000({self.user}) gid=1000({self.user}) groups=1000({self.user}),4(adm),24(cdrom),27(sudo)"
+        if cmd == "groups": return f"{self.user} adm cdrom sudo dip plugdev lxd"
         
-        if cmd in ["netstat", "ss"]:
-            return """Active Internet connections (only servers)
-Proto Recv-Q Send-Q Local Address           Foreign Address         State      
-tcp        0      0 0.0.0.0:22              0.0.0.0:* LISTEN     
-tcp        0      0 127.0.0.53:53           0.0.0.0:* LISTEN     
-udp        0      0 127.0.0.53:53           0.0.0.0:* """
-
-        if cmd == "ping":
-            target = arg1 if arg1 else "8.8.8.8"
-            return f"PING {target} ({target}) 56(84) bytes of data.\n64 bytes from {target}: icmp_seq=1 ttl=118 time=14.2 ms\n64 bytes from {target}: icmp_seq=2 ttl=118 time=15.1 ms\n^C"
-
-        if cmd == "route":
-            return """Kernel IP routing table
-Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-default         _gateway        0.0.0.0         UG    100    0        0 eth0
-192.168.1.0     0.0.0.0         255.255.255.0   U     100    0        0 eth0"""
-
-        # --- Process Management ---
-        if cmd == "ps":
-            return """    PID TTY          TIME CMD
-   1422 pts/0    00:00:00 bash
-   1455 pts/0    00:00:00 ps"""
-        if cmd == "top":
-            return "top - 15:45:22 up 2 days,  1 user,  load average: 0.00, 0.00, 0.00\nTasks:  94 total,   1 running,  93 sleeping"
-
-        # --- Admin / Permissions ---
-        if cmd == "sudo":
-            return f"[sudo] password for {self.user}: "
-        if cmd == "su":
-            return "Password: "
-        if cmd in ["service", "systemctl"]:
-            return "Failed to connect to bus: No such file or directory"
-
-        # --- Hack Tools / Scanners (Simulated Failures/Time wasters) ---
-        if cmd in ["nmap", "masscan"]:
-            return f"Starting Nmap 7.80 ( https://nmap.org ) at {datetime.now().strftime('%Y-%m-%d %H:%M')}\nNote: Host seems down. If it is really up, but blocking our ping probes, try -Pn\nNmap done: 1 IP address (0 hosts up) scanned in 3.02 seconds"
+        # --- Disk & Hardware ---
+        if cmd == "df": return "Filesystem     1K-blocks    Used Available Use% Mounted on\n/dev/sda1       30646684 8456122  22190562  28% /"
+        if cmd == "du": return "4\t./.bashrc\n4\t./.profile\n12\t."
+        if cmd == "free": return "              total        used        free      shared  buff/cache   available\nMem:        8104640     1254320     4501230       12040     2349090     6540230"
+        if cmd == "lscpu": return "Architecture:            x86_64\n  CPU op-mode(s):        32-bit, 64-bit\n  Address sizes:         39 bits physical, 48 bits virtual\n  Byte Order:            Little Endian\nCPU(s):                  2"
         
-        if cmd in ["hydra", "medusa"]:
-            return "[ERROR] Target does not support password authentication or connection refused."
+        # --- Networking (Fake) ---
+        if cmd in ["ip", "ifconfig"]: return self.fake_network_info()
+        if cmd == "ping": return f"PING {args[0] if args else '8.8.8.8'} ({args[0] if args else '8.8.8.8'}) 56(84) bytes of data.\n64 bytes from {args[0] if args else '8.8.8.8'}: icmp_seq=1 ttl=117 time=12.1 ms\n64 bytes from {args[0] if args else '8.8.8.8'}: icmp_seq=2 ttl=117 time=12.3 ms"
+        if cmd in ["netstat", "ss"]: return "tcp  0  0 0.0.0.0:22  0.0.0.0:* LISTEN"
         
-        if cmd in ["sqlmap", "nikto", "dirb", "gobuster"]:
-            return f"[!] {cmd.upper()}: Connection timed out to target URL."
+        # --- Package Management (APT) ---
+        if cmd in ["apt", "apt-get"]: return self.do_apt(args)
         
-        if cmd == "msfconsole":
-             return """
-     ,           ,
-    /             \\
-   ((__---,,,---__))
-      (_) O O (_)_________
-         \ _ /            |\\
-          o_o \   M S F   | \\
-               \   _____  |  *
-                |||   WW|||
-                |||     |||
-
-[!] Database not connected.
-[*] Starting the Metasploit Framework console...
-[-] Failed to connect to the database: connection refused
-"""
-
-        if cmd in ["nc", "netcat"]:
-            return "" # Netcat often hangs silently if no connection
-
-        if cmd in ["python", "python3"]:
-            return "Python 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0] on linux\nType \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n>>> quit()\n"
-
-        if cmd == "which":
-            # Check against our fake list of commands
-            all_cmds = self.get_all_commands()
-            if arg1 in all_cmds:
-                if arg1 in ["ls", "cat", "cp", "mv", "rm", "mkdir"]: return f"/usr/bin/{arg1}"
-                if arg1 in ["ifconfig", "route"]: return f"/usr/sbin/{arg1}"
-                return f"/bin/{arg1}"
-            return ""
-
-        # --- Default for unknown ---
-        if cmd in self.get_all_commands():
-            # If it's in our known list but not handled specifically above,
-            # return a generic "command missing" or empty to simulate installed but no output
-            return ""
-            
+        # --- System Control ---
+        if cmd in ["shutdown", "reboot", "init"]: return f"Failed to talk to init daemon."
+        if cmd in ["systemctl", "service"]: return "Failed to connect to bus: No such file or directory"
+        
+        # --- Shell/Env ---
+        if cmd == "echo": return " ".join(args)
+        if cmd == "export": return "" # Fake success
+        if cmd == "env": return f"USER={self.user}\nHOME=/home/{self.user}\nSHELL=/bin/bash\nTERM=xterm-256color"
+        
+        # --- Fallback ---
         return f"{cmd}: command not found"
 
-    # ================= FILESYSTEM LOGIC =================
+    # ================= IMPLEMENTATIONS =================
 
-    def cd(self, path):
-        if not path or path == "~":
-            self.cwd = ["home", self.user]
-            return ""
-            
-        _, _, node = self._resolve_node(path)
-        if node and node["type"] == "dir":
-            # Re-resolve path to update CWD cleanly
-            if path.startswith("/"):
-                new_parts = [p for p in path.split("/") if p]
-                self.cwd = new_parts
-            else:
-                # Relative path logic
-                temp_cwd = self.cwd.copy()
-                parts = [p for p in path.split("/") if p]
-                for p in parts:
-                    if p == "..": 
-                        if temp_cwd: temp_cwd.pop()
-                    elif p != ".": 
-                        temp_cwd.append(p)
-                self.cwd = temp_cwd
-            return ""
-        elif node and node["type"] == "file":
-            return f"-bash: cd: {path}: Not a directory"
-        else:
-            return f"-bash: cd: {path}: No such file or directory"
-
-    def ls(self, path="."):
-        _, _, node = self._resolve_node(path)
-        if not node:
-            return f"ls: cannot access '{path}': No such file or directory"
+    def do_ls(self, args):
+        show_hidden = "-a" in args
+        show_details = "-l" in args or "ll" in args
         
-        if node["type"] == "file":
-            return path
+        # Parse path from args (ignore flags)
+        target = "."
+        for arg in args:
+            if not arg.startswith("-"): target = arg; break
+            
+        _, _, node = self._resolve_node(target)
+        if not node: return f"ls: cannot access '{target}': No such file or directory"
+        
+        if node["type"] == "file": return target
 
-        # Directory listing
         children = node.get("children", {})
-        # Simple column output simulation
-        names = list(children.keys())
-        return "  ".join(names)
+        items = []
+        for name in children.keys():
+            if not show_hidden and name.startswith("."): continue
+            items.append(name)
+        
+        # Add . and .. for -a
+        if show_hidden:
+            items = [".", ".."] + items
+            
+        if show_details:
+            lines = [f"total {len(items) * 4}"]
+            for name in items:
+                if name in [".", ".."]:
+                    # Fake stats for . and ..
+                    lines.append(f"drwxr-xr-x 2 {self.user} {self.user} 4096 Jan 1 10:00 {name}")
+                    continue
+                
+                data = children[name]
+                line = f"{data['perm']} 1 {data['user']} {data['group']} {str(data['size']).rjust(5)} {data['modified']} {name}"
+                lines.append(line)
+            return "\r\n".join(lines)
+        
+        return "  ".join(items)
 
-    def ls_l(self, path="."):
-        # Detailed listing (for 'll' or 'ls -l')
+    def do_cd(self, args):
+        target = args[0] if args else "~"
+        
+        if target == "-":
+            target_path = self.old_pwd
+            print_path = True
+        else:
+            print_path = False
+            # Resolve target
+            if target == "~": 
+                target_path = ["home", self.user]
+            elif target == ".":
+                return ""
+            elif target == "..":
+                target_path = self.cwd[:-1] if self.cwd else []
+            else:
+                # Resolve complex path
+                parent, name, node = self._resolve_node(target)
+                if not node: return f"-bash: cd: {target}: No such file or directory"
+                if node["type"] != "dir": return f"-bash: cd: {target}: Not a directory"
+                
+                # Re-calculate absolute stack for cwd
+                # This is a simplification; for robust relative paths we'd need better stack logic
+                # But since resolve_node traverses, we can cheat by just setting CWD if it was absolute
+                # For this snippet, let's just assume we found it.
+                # A proper implementation requires tracking the stack in resolve_node.
+                
+                # Hacky fix for relative paths updates:
+                if target.startswith("/"):
+                    target_path = [p for p in target.split("/") if p]
+                else:
+                    new_stack = self.cwd.copy()
+                    for p in target.split("/"):
+                        if p == "..": 
+                            if new_stack: new_stack.pop()
+                        elif p != ".": 
+                            new_stack.append(p)
+                    target_path = new_stack
+
+        self.old_pwd = self.cwd
+        self.cwd = target_path
+        return "/" + "/".join(self.cwd) if print_path else ""
+
+    def do_mkdir(self, args):
+        if not args: return "mkdir: missing operand"
+        path = args[-1] # Assume last arg is path, ignore flags like -p for now
+        
+        # Get parent
+        parent, name, node = self._resolve_node(path, parent_only=True)
+        if not parent: return f"mkdir: cannot create directory '{path}': No such file or directory"
+        
+        if name in parent["children"]:
+            return f"mkdir: cannot create directory '{path}': File exists"
+            
+        parent["children"][name] = {
+            "type": "dir", "perm": "drwxr-xr-x", "user": self.user, "group": self.user,
+            "size": 4096, "modified": datetime.now().strftime("%b %d %H:%M"), "children": {}
+        }
+        self._save_fs()
+        return ""
+
+    def do_rm(self, args):
+        recursive = "-r" in args or "-rf" in args
+        targets = [a for a in args if not a.startswith("-")]
+        if not targets: return "rm: missing operand"
+        
+        output = []
+        for path in targets:
+            parent, name, node = self._resolve_node(path, parent_only=True)
+            if not parent or name not in parent["children"]:
+                output.append(f"rm: cannot remove '{path}': No such file or directory")
+                continue
+            
+            node_to_del = parent["children"][name]
+            if node_to_del["type"] == "dir" and not recursive:
+                output.append(f"rm: cannot remove '{path}': Is a directory")
+                continue
+            
+            del parent["children"][name]
+            self._save_fs()
+            
+        return "\n".join(output)
+
+    def do_touch(self, args):
+        if not args: return "touch: missing file operand"
+        path = args[0]
+        
+        parent, name, node = self._resolve_node(path, parent_only=True)
+        if not parent: return f"touch: cannot touch '{path}': No such file or directory"
+        
+        if name in parent["children"]:
+            # Update timestamp
+            parent["children"][name]["modified"] = datetime.now().strftime("%b %d %H:%M")
+        else:
+            parent["children"][name] = {
+                "type": "file", "perm": "-rw-r--r--", "user": self.user, "group": self.user,
+                "size": 0, "modified": datetime.now().strftime("%b %d %H:%M"), "content": ""
+            }
+        self._save_fs()
+        return ""
+
+    def do_cat(self, args):
+        if not args: return ""
+        path = args[0]
         _, _, node = self._resolve_node(path)
-        if not node: return f"ls: cannot access '{path}': No such file or directory"
-
-        if node["type"] == "file":
-             return f"{node['perm']} 1 {node['user']} {node['group']} {node['size']} {node['modified']} {path}"
-
-        lines = [f"total {len(node.get('children', {})) * 4}"]
-        for name, data in node.get("children", {}).items():
-            line = f"{data['perm']} 1 {data['user']} {data['group']} {str(data['size']).rjust(5)} {data['modified']} {name}"
-            lines.append(line)
-        return "\r\n".join(lines)
-
-    def cat(self, path):
-        if not path: return ""
-        _, _, node = self._resolve_node(path)
-        if not node:
-            return f"cat: {path}: No such file or directory"
-        if node["type"] == "dir":
-            return f"cat: {path}: Is a directory"
+        if not node: return f"cat: {path}: No such file or directory"
+        if node["type"] == "dir": return f"cat: {path}: Is a directory"
         return node.get("content", "")
 
-    def mkdir(self, path):
-        if not path: return "mkdir: missing operand"
-        if "/" in path: return "mkdir: cannot create directory (nested paths not supported in beta)"
-        
-        _, _, cwd_node = self._resolve_node(".")
-        if path in cwd_node["children"]:
-            return f"mkdir: cannot create directory '{path}': File exists"
-        
-        cwd_node["children"][path] = {
-            "type": "dir",
-            "perm": "drwxr-xr-x",
-            "user": self.user,
-            "group": self.user,
-            "size": 4096,
-            "modified": datetime.now().strftime("%b %d %H:%M"),
-            "children": {}
-        }
+    def do_apt(self, args):
+        if "update" in args:
+            return "Hit:1 http://archive.ubuntu.com/ubuntu jammy InRelease\nHit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease\nReading package lists... Done"
+        if "install" in args:
+            pkgs = [a for a in args if a not in ["install", "-y"]]
+            if not pkgs: return "apt: missing package name"
+            time.sleep(1) # Fake delay
+            self.installed_packages.update(pkgs)
+            return f"Reading package lists... Done\nBuilding dependency tree... Done\nThe following NEW packages will be installed:\n  {' '.join(pkgs)}\n0 upgraded, {len(pkgs)} newly installed, 0 to remove.\nSetting up {pkgs[0]} (1.0.0)... Done."
         return ""
 
-    def rm(self, path):
-        if not path: return "rm: missing operand"
-        parent, name, node = self._resolve_node(path)
-        if parent is None: return f"rm: cannot remove '{path}': No such file or directory"
+    def do_chmod(self, args):
+        if len(args) < 2: return "chmod: missing operand"
+        mode = args[0]
+        path = args[1]
         
-        if node["type"] == "dir":
-            return f"rm: cannot remove '{path}': Is a directory"
+        _, _, node = self._resolve_node(path)
+        if not node: return f"chmod: cannot access '{path}': No such file or directory"
+        
+        # Fake permission change (simple)
+        if mode == "+x":
+            node["perm"] = node["perm"].replace("-", "x")
+        # In a real impl, you'd parse 777 or u+x logic here
+        self._save_fs()
+        return ""
+    
+    def fake_network_info(self):
+        return """eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.34  netmask 255.255.255.0  broadcast 192.168.1.255
+        ether 08:00:27:1a:2b:3c  txqueuelen 1000  (Ethernet)
+        RX packets 1234  bytes 987654 (987.6 KB)
+        TX packets 567   bytes 123456 (123.4 KB)"""
+
+    def do_uptime(self):
+        delta = datetime.now() - self.start_time
+        return f" {datetime.now().strftime('%H:%M:%S')} up {str(delta).split('.')[0]},  1 user,  load average: 0.00, 0.01, 0.05"
+        
+    def do_head_tail(self, cmd, args):
+        if not args: return ""
+        content = self.do_cat([args[0]])
+        if "No such file" in content: return content
+        lines = content.split('\n')
+        if cmd == "head": return "\n".join(lines[:10])
+        return "\n".join(lines[-10:])
+
+    def do_cp(self, args):
+        if len(args) < 2: return "cp: missing file operand"
+        src, dest = args[0], args[1]
+        
+        # Read src
+        parent_src, name_src, node_src = self._resolve_node(src, parent_only=True)
+        if not node_src or name_src not in parent_src["children"]:
+            return f"cp: cannot stat '{src}': No such file"
+            
+        # Write dest
+        parent_dst, name_dst, node_dst = self._resolve_node(dest, parent_only=True)
+        if not parent_dst: return f"cp: cannot create regular file '{dest}': No such file or directory"
+        
+        # Actual copy in memory
+        parent_dst["children"][name_dst] = copy.deepcopy(parent_src["children"][name_src])
+        self._save_fs()
+        return ""
+
+    def do_mv(self, args):
+        if len(args) < 2: return "mv: missing file operand"
+        src, dest = args[0], args[1]
+        
+        res = self.do_cp([src, dest])
+        if "cannot" in res: return res
+        self.do_rm([src]) # CP then RM = MV
+        self._save_fs()
+        return ""
+    
+    def do_rmdir(self, args):
+        if not args: return "rmdir: missing operand"
+        path = args[0]
+        parent, name, node = self._resolve_node(path, parent_only=True)
+        if not node or name not in parent["children"]:
+            return f"rmdir: failed to remove '{path}': No such file or directory"
+        
+        target = parent["children"][name]
+        if target["type"] != "dir": return f"rmdir: failed to remove '{path}': Not a directory"
+        if target["children"]: return f"rmdir: failed to remove '{path}': Directory not empty"
         
         del parent["children"][name]
+        self._save_fs()
         return ""
-
-    def touch(self, path):
-        if not path: return "touch: missing file operand"
-        if "/" in path: return ""
-        
-        _, _, cwd_node = self._resolve_node(".")
-        if path in cwd_node["children"]:
-            cwd_node["children"][path]["modified"] = datetime.now().strftime("%b %d %H:%M")
-        else:
-            cwd_node["children"][path] = {
-                "type": "file",
-                "perm": "-rw-r--r--",
-                "user": self.user,
-                "group": self.user,
-                "size": 0,
-                "modified": datetime.now().strftime("%b %d %H:%M"),
-                "content": ""
-            }
-        return ""
-
-    def get_all_commands(self):
-        # List of "fake" commands that shouldn't return "command not found"
-        return [
-            "whoami", "id", "hostname", "uname", "cat", "ls", "pwd", "find", "locate", 
-            "which", "ps", "netstat", "ss", "w", "last", "lastlog", "history", "ifconfig", 
-            "ip", "ping", "nmap", "nc", "telnet", "ssh", "curl", "wget", "dig", "nslookup", 
-            "host", "arp", "route", "tcpdump", "wireshark", "tshark", "sudo", "su", 
-            "crontab", "systemctl", "less", "head", "tail", "grep", "cp", "mv", "scp", 
-            "rsync", "tar", "gzip", "base64", "dd", "xxd", "echo", "chmod", "chown", 
-            "useradd", "usermod", "passwd", "ssh-keygen", "ssh-copy-id", "top", "kill", 
-            "killall", "pkill", "service", "rm", "shred", "unset", "export", "touch", 
-            "utmpdump", "john", "hashcat", "hydra", "md5sum", "sha256sum", "openssl", 
-            "msfconsole", "gcc", "python", "perl", "bash", "sqlmap", "nikto", "dirb", 
-            "gobuster", "arpspoof", "ettercap", "bettercap", "socat", "enum4linux", 
-            "linpeas", "linenum", "lse", "nohup", "disown", "screen", "tmux"
-        ]

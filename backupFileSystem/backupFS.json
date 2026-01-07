@@ -795,15 +795,6 @@
               }
             }
           }
-        },
-        "admin": {
-          "type": "dir",
-          "perm": "drwxr-x---",
-          "user": "admin",
-          "group": "admin",
-          "size": 4096,
-          "modified": "Jan 1 10:00",
-          "children": {}
         }
       }
     },
