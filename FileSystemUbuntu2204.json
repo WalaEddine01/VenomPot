@@ -1,0 +1,2638 @@
+{
+  "name": "",
+  "type": "dir",
+  "perm": "drwxr-xr-x",
+  "user": "root",
+  "group": "root",
+  "size": 4096,
+  "modified": "Jan 1 10:00",
+  "children": {
+    "bin": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "bash": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 1234000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "ls": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 140000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "cat": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 43000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "cp": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 153000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "mv": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 149000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "rm": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 68000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "mkdir": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 84000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "rmdir": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 51000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "chmod": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 68000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "chown": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 72000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "pwd": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 39000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "echo": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 39000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "grep": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 220000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "sed": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 151000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "tar": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 448000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "gzip": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 104000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "gunzip": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 6000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "ps": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 141000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "kill": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 35000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "su": {
+          "type": "file",
+          "perm": "-rwsr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 67000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "df": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 84000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "du": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 121000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "touch": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 96000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        }
+      }
+    },
+    "boot": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "grub": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "grub.cfg": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 8192,
+              "modified": "Jan 1 10:00",
+              "content": "# GRUB configuration file"
+            }
+          }
+        },
+        "vmlinuz": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 11534336,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "initrd.img": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 47892480,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        }
+      }
+    },
+    "dev": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "null": {
+          "type": "file",
+          "perm": "crw-rw-rw-",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "zero": {
+          "type": "file",
+          "perm": "crw-rw-rw-",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "random": {
+          "type": "file",
+          "perm": "crw-rw-rw-",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "urandom": {
+          "type": "file",
+          "perm": "crw-rw-rw-",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "sda": {
+          "type": "file",
+          "perm": "brw-rw----",
+          "user": "root",
+          "group": "disk",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "sda1": {
+          "type": "file",
+          "perm": "brw-rw----",
+          "user": "root",
+          "group": "disk",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "tty": {
+          "type": "file",
+          "perm": "crw-rw-rw-",
+          "user": "root",
+          "group": "tty",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        }
+      }
+    },
+    "etc": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "passwd": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 1500,
+          "modified": "Jan 1 10:00",
+          "content": "root:x:0:0:root:/root:/bin/bash\ndaemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin\nbin:x:2:2:bin:/bin:/usr/sbin/nologin\nsys:x:3:3:sys:/dev:/usr/sbin/nologin\nwww-data:x:33:33:www-data:/var/www:/usr/sbin/nologin\nuser:x:1000:1000:user:/home/user:/bin/bash"
+        },
+        "shadow": {
+          "type": "file",
+          "perm": "-rw-r-----",
+          "user": "root",
+          "group": "shadow",
+          "size": 1000,
+          "modified": "Jan 1 10:00",
+          "content": "PERMISSION DENIED"
+        },
+        "group": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 800,
+          "modified": "Jan 1 10:00",
+          "content": "root:x:0:\ndaemon:x:1:\nbin:x:2:\nsys:x:3:\nadm:x:4:\ntty:x:5:\ndisk:x:6:\nsudo:x:27:user\nwww-data:x:33:\nuser:x:1000:"
+        },
+        "hostname": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 12,
+          "modified": "Jan 1 10:00",
+          "content": "ubuntu-server"
+        },
+        "hosts": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 220,
+          "modified": "Jan 1 10:00",
+          "content": "127.0.0.1\tlocalhost\n127.0.1.1\tubuntu-server\n\n::1\t\tlocalhost ip6-localhost ip6-loopback"
+        },
+        "fstab": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 450,
+          "modified": "Jan 1 10:00",
+          "content": "# /etc/fstab: static file system information\nUUID=xxx-xxx-xxx / ext4 errors=remount-ro 0 1"
+        },
+        "resolv.conf": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 100,
+          "modified": "Jan 1 10:00",
+          "content": "nameserver 8.8.8.8\nnameserver 8.8.4.4"
+        },
+        "os-release": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 400,
+          "modified": "Jan 1 10:00",
+          "content": "NAME=\"Ubuntu\"\nVERSION=\"22.04 LTS (Jammy Jellyfish)\"\nID=ubuntu\nID_LIKE=debian\nPRETTY_NAME=\"Ubuntu 22.04 LTS\"\nVERSION_ID=\"22.04\""
+        },
+        "sudoers": {
+          "type": "file",
+          "perm": "-r--r-----",
+          "user": "root",
+          "group": "root",
+          "size": 755,
+          "modified": "Jan 1 10:00",
+          "content": "PERMISSION DENIED"
+        },
+        "profile": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 575,
+          "modified": "Jan 1 10:00",
+          "content": "# /etc/profile: system-wide .profile file\nPATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\""
+        },
+        "apt": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "sources.list": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 3000,
+              "modified": "Jan 1 10:00",
+              "content": "deb http://archive.ubuntu.com/ubuntu jammy main restricted\ndeb http://archive.ubuntu.com/ubuntu jammy-updates main restricted\ndeb http://archive.ubuntu.com/ubuntu jammy universe\ndeb http://archive.ubuntu.com/ubuntu jammy-updates universe"
+            },
+            "apt.conf.d": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "ssh": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "sshd_config": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 3300,
+              "modified": "Jan 1 10:00",
+              "content": "# SSH Server Configuration\nPort 22\nPermitRootLogin prohibit-password\nPasswordAuthentication yes"
+            },
+            "ssh_config": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 1650,
+              "modified": "Jan 1 10:00",
+              "content": "# SSH Client Configuration\nHost *\n  SendEnv LANG LC_*"
+            }
+          }
+        },
+        "network": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "interfaces": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 450,
+              "modified": "Jan 1 10:00",
+              "content": "# Network interfaces configuration\nauto lo\niface lo inet loopback"
+            }
+          }
+        },
+        "systemd": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "system": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "multi-user.target": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 500,
+                  "modified": "Jan 1 10:00",
+                  "content": ""
+                }
+              }
+            }
+          }
+        },
+        "cron.d": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "crontab": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 722,
+          "modified": "Jan 1 10:00",
+          "content": "# /etc/crontab: system-wide crontab\nSHELL=/bin/bash\nPATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin"
+        },
+        "environment": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 100,
+          "modified": "Jan 1 10:00",
+          "content": "PATH=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games\""
+        },
+        "bash.bashrc": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 2300,
+          "modified": "Jan 1 10:00",
+          "content": "# System-wide .bashrc file"
+        },
+        "shells": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 100,
+          "modified": "Jan 1 10:00",
+          "content": "/bin/bash\n/bin/sh\n/bin/dash"
+        },
+        "timezone": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 11,
+          "modified": "Jan 1 10:00",
+          "content": "Etc/UTC"
+        },
+        "locale.gen": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 8500,
+          "modified": "Jan 1 10:00",
+          "content": "# locale.gen\nen_US.UTF-8 UTF-8"
+        },
+        "default": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "locale": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 200,
+              "modified": "Jan 1 10:00",
+              "content": "LANG=en_US.UTF-8"
+            }
+          }
+        },
+        "security": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "limits.conf": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 2000,
+              "modified": "Jan 1 10:00",
+              "content": "# /etc/security/limits.conf"
+            }
+          }
+        },
+        "pam.d": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "common-auth": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 1200,
+              "modified": "Jan 1 10:00",
+              "content": "# PAM configuration for authentication"
+            }
+          }
+        }
+      }
+    },
+    "home": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "user": {
+          "type": "dir",
+          "perm": "drwxr-x---",
+          "user": "user",
+          "group": "user",
+          "size": 4096,
+          "modified": "Jan 1 12:00",
+          "children": {
+            ".bashrc": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "user",
+              "group": "user",
+              "size": 3771,
+              "modified": "Jan 1 12:00",
+              "content": "# ~/.bashrc: executed by bash for non-login shells"
+            },
+            ".bash_logout": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "user",
+              "group": "user",
+              "size": 220,
+              "modified": "Jan 1 12:00",
+              "content": "# ~/.bash_logout: executed by bash when login shell exits"
+            },
+            ".profile": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "user",
+              "group": "user",
+              "size": 807,
+              "modified": "Jan 1 12:00",
+              "content": "# ~/.profile: executed by the command interpreter for login shells"
+            },
+            ".bash_history": {
+              "type": "file",
+              "perm": "-rw-------",
+              "user": "user",
+              "group": "user",
+              "size": 1500,
+              "modified": "Jan 2 16:00",
+              "content": "ls -la\ncd /var/www\nsudo apt update\npwd"
+            },
+            "secrets.txt": {
+              "type": "file",
+              "perm": "-rw-------",
+              "user": "user",
+              "group": "user",
+              "size": 52,
+              "modified": "Jan 2 14:20",
+              "content": "CONFIDENTIAL DATA\nApiKey: 8f9s89f89s89f8"
+            },
+            "notes.md": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "user",
+              "group": "user",
+              "size": 102,
+              "modified": "Jan 2 15:00",
+              "content": "# TODO\n1. Backup server\n2. Update firewall"
+            },
+            "Documents": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "user",
+              "group": "user",
+              "size": 4096,
+              "modified": "Jan 1 12:00",
+              "children": {
+                "report.txt": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "user",
+                  "group": "user",
+                  "size": 2048,
+                  "modified": "Jan 2 10:00",
+                  "content": "Annual Report 2024\n\nExecutive Summary..."
+                }
+              }
+            },
+            "Downloads": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "user",
+              "group": "user",
+              "size": 4096,
+              "modified": "Jan 1 12:00",
+              "children": {}
+            },
+            ".ssh": {
+              "type": "dir",
+              "perm": "drwx------",
+              "user": "user",
+              "group": "user",
+              "size": 4096,
+              "modified": "Jan 1 12:00",
+              "children": {
+                "authorized_keys": {
+                  "type": "file",
+                  "perm": "-rw-------",
+                  "user": "user",
+                  "group": "user",
+                  "size": 400,
+                  "modified": "Jan 1 12:00",
+                  "content": ""
+                },
+                "known_hosts": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "user",
+                  "group": "user",
+                  "size": 200,
+                  "modified": "Jan 1 12:00",
+                  "content": ""
+                }
+              }
+            }
+          }
+        },
+        "admin": {
+          "type": "dir",
+          "perm": "drwxr-x---",
+          "user": "admin",
+          "group": "admin",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "lib": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "modules": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "systemd": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "x86_64-linux-gnu": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "libc.so.6": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 2029560,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "libm.so.6": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 1369384,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        }
+      }
+    },
+    "lib64": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "ld-linux-x86-64.so.2": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 208968,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        }
+      }
+    },
+    "media": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "cdrom": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "user": {
+          "type": "dir",
+          "perm": "drwxr-x---",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "mnt": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {}
+    },
+    "opt": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {}
+    },
+    "proc": {
+      "type": "dir",
+      "perm": "dr-xr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 0,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "cpuinfo": {
+          "type": "file",
+          "perm": "-r--r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": "processor\t: 0\nvendor_id\t: GenuineIntel\ncpu family\t: 6\nmodel name\t: Intel(R) Core(TM) i7"
+        },
+        "meminfo": {
+          "type": "file",
+          "perm": "-r--r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": "MemTotal:        8192000 kB\nMemFree:         4096000 kB"
+        },
+        "version": {
+          "type": "file",
+          "perm": "-r--r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "content": "Linux version 5.15.0-58-generic"
+        }
+      }
+    },
+    "root": {
+      "type": "dir",
+      "perm": "drwx------",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        ".bashrc": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 3106,
+          "modified": "Jan 1 10:00",
+          "content": "# ~/.bashrc: executed by bash for non-login shells"
+        },
+        ".profile": {
+          "type": "file",
+          "perm": "-rw-r--r--",
+          "user": "root",
+          "group": "root",
+          "size": 570,
+          "modified": "Jan 1 10:00",
+          "content": "# ~/.profile: executed by the command interpreter for login shells"
+        },
+        ".bash_history": {
+          "type": "file",
+          "perm": "-rw-------",
+          "user": "root",
+          "group": "root",
+          "size": 2000,
+          "modified": "Jan 2 08:00",
+          "content": "apt update\napt upgrade\nsystemctl status ssh\nls -la /var/log"
+        },
+        ".ssh": {
+          "type": "dir",
+          "perm": "drwx------",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "authorized_keys": {
+              "type": "file",
+              "perm": "-rw-------",
+              "user": "root",
+              "group": "root",
+              "size": 0,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        },
+        "scripts": {
+          "type": "dir",
+          "perm": "drwx------",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "backup.sh": {
+              "type": "file",
+              "perm": "-rwx------",
+              "user": "root",
+              "group": "root",
+              "size": 512,
+              "modified": "Jan 1 10:00",
+              "content": "#!/bin/bash\n# Backup script\ntar -czf /backup/system.tar.gz /etc /home"
+            }
+          }
+        }
+      }
+    },
+    "run": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "systemd": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "lock": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "user": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "sbin": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "init": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 153000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "reboot": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 23000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "shutdown": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 23000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "poweroff": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 23000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "halt": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 23000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "fsck": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 68000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "fdisk": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 252000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "mkfs": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 14000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "mount": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 51000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "umount": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 39000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "ifconfig": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 71000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "ip": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 802000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "iptables": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 84000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "route": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 63000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "modprobe": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 174000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "sysctl": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 43000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "useradd": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 130000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "userdel": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 114000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "usermod": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 134000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "groupadd": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 97000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        },
+        "groupdel": {
+          "type": "file",
+          "perm": "-rwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 89000,
+          "modified": "Jan 1 10:00",
+          "content": ""
+        }
+      }
+    },
+    "srv": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {}
+    },
+    "sys": {
+      "type": "dir",
+      "perm": "dr-xr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 0,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "class": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "devices": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "block": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 0,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "tmp": {
+      "type": "dir",
+      "perm": "drwxrwxrwt",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        ".X11-unix": {
+          "type": "dir",
+          "perm": "drwxrwxrwt",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "systemd-private": {
+          "type": "dir",
+          "perm": "drwx------",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "usr": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "bin": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "python3": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 5490000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "python3.10": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 5490000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "perl": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 2108000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "awk": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 481000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "vim": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 3355000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "nano": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 246000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "wget": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 516000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "curl": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 239000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "ssh": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 893000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "scp": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 118000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "git": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 2567000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "gcc": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 965000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "make": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 220000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "find": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 320000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "xargs": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 56000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "diff": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 252000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "patch": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 130000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "head": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 47000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "tail": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 76000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "sort": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 149000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "uniq": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 47000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "wc": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 47000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "cut": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 55000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "tr": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 51000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "basename": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 35000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "dirname": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 35000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "whoami": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 35000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "uptime": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 27000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "free": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 23000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "top": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 141000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "htop": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 138000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "less": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 188000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "more": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 43000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "which": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 946,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "whereis": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 27000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "man": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 116000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "apt": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 97000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "apt-get": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 97000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "dpkg": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 322000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "systemctl": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 710000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "journalctl": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 506000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "netstat": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 175000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "ping": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 77000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "traceroute": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 63000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "nslookup": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 23000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "dig": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 805000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "host": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 39000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        },
+        "sbin": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "service": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4569,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "adduser": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 37000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "deluser": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 28000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "visudo": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 166000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "update-grub": {
+              "type": "file",
+              "perm": "-rwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 1200,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        },
+        "lib": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "python3": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "dist-packages": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                }
+              }
+            },
+            "systemd": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "system": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "ssh.service": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 200,
+                      "modified": "Jan 1 10:00",
+                      "content": "[Unit]\nDescription=OpenBSD Secure Shell server"
+                    },
+                    "cron.service": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 180,
+                      "modified": "Jan 1 10:00",
+                      "content": "[Unit]\nDescription=Regular background program processing daemon"
+                    }
+                  }
+                }
+              }
+            },
+            "ssl": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "certs": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "ca-certificates.crt": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 214000,
+                      "modified": "Jan 1 10:00",
+                      "content": ""
+                    }
+                  }
+                },
+                "private": {
+                  "type": "dir",
+                  "perm": "drwx------",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                },
+                "openssl.cnf": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 10923,
+                  "modified": "Jan 1 10:00",
+                  "content": "# OpenSSL configuration"
+                }
+              }
+            },
+            "x86_64-linux-gnu": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "local": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "bin": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "sbin": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "lib": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "share": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "src": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "share": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "man": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "man1": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "ls.1.gz": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 5000,
+                      "modified": "Jan 1 10:00",
+                      "content": ""
+                    }
+                  }
+                },
+                "man5": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                },
+                "man8": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                }
+              }
+            },
+            "doc": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "info": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "locale": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "en_US": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                }
+              }
+            },
+            "zoneinfo": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "UTC": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 118,
+                  "modified": "Jan 1 10:00",
+                  "content": ""
+                },
+                "America": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "New_York": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 3545,
+                      "modified": "Jan 1 10:00",
+                      "content": ""
+                    }
+                  }
+                },
+                "Europe": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "London": {
+                      "type": "file",
+                      "perm": "-rw-r--r--",
+                      "user": "root",
+                      "group": "root",
+                      "size": 3545,
+                      "modified": "Jan 1 10:00",
+                      "content": ""
+                    }
+                  }
+                }
+              }
+            },
+            "applications": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "pixmaps": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "fonts": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "common-licenses": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "GPL-3": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 35147,
+                  "modified": "Jan 1 10:00",
+                  "content": ""
+                },
+                "Apache-2.0": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 11358,
+                  "modified": "Jan 1 10:00",
+                  "content": ""
+                }
+              }
+            }
+          }
+        },
+        "include": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "stdio.h": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 33000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "stdlib.h": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 32000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            },
+            "string.h": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 23000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        },
+        "src": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    },
+    "var": {
+      "type": "dir",
+      "perm": "drwxr-xr-x",
+      "user": "root",
+      "group": "root",
+      "size": 4096,
+      "modified": "Jan 1 10:00",
+      "children": {
+        "log": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "syslog": {
+              "type": "file",
+              "perm": "-rw-r-----",
+              "user": "syslog",
+              "group": "adm",
+              "size": 50000,
+              "modified": "Jan 3 09:15",
+              "content": "Jan 3 09:15:01 ubuntu-server CRON[1234]: (root) CMD (command)"
+            },
+            "auth.log": {
+              "type": "file",
+              "perm": "-rw-r-----",
+              "user": "syslog",
+              "group": "adm",
+              "size": 25000,
+              "modified": "Jan 3 08:30",
+              "content": "Jan 3 08:30:15 ubuntu-server sshd[5678]: Accepted password for user from 192.168.1.100"
+            },
+            "kern.log": {
+              "type": "file",
+              "perm": "-rw-r-----",
+              "user": "syslog",
+              "group": "adm",
+              "size": 30000,
+              "modified": "Jan 2 10:00",
+              "content": "Jan 2 10:00:00 ubuntu-server kernel: [    0.000000] Linux version 5.15.0"
+            },
+            "dpkg.log": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 15000,
+              "modified": "Jan 2 14:00",
+              "content": "2025-01-02 14:00:00 startup archives install"
+            },
+            "apt": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "history.log": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 8000,
+                  "modified": "Jan 2 14:00",
+                  "content": "Start-Date: 2025-01-02  14:00:00\nCommandline: apt update"
+                },
+                "term.log": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 12000,
+                  "modified": "Jan 2 14:00",
+                  "content": ""
+                }
+              }
+            },
+            "journal": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "systemd-journal",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            },
+            "alternatives.log": {
+              "type": "file",
+              "perm": "-rw-r--r--",
+              "user": "root",
+              "group": "root",
+              "size": 5000,
+              "modified": "Jan 1 10:00",
+              "content": ""
+            }
+          }
+        },
+        "cache": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "apt": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "archives": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "partial": {
+                      "type": "dir",
+                      "perm": "drwx------",
+                      "user": "root",
+                      "group": "root",
+                      "size": 4096,
+                      "modified": "Jan 1 10:00",
+                      "children": {}
+                    }
+                  }
+                }
+              }
+            },
+            "man": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "man",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "lib": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "dpkg": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "status": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 500000,
+                  "modified": "Jan 2 14:00",
+                  "content": "Package: base-files\nStatus: install ok installed"
+                },
+                "available": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 1000,
+                  "modified": "Jan 1 10:00",
+                  "content": ""
+                }
+              }
+            },
+            "apt": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "lists": {
+                  "type": "dir",
+                  "perm": "drwxr-xr-x",
+                  "user": "root",
+                  "group": "root",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {
+                    "partial": {
+                      "type": "dir",
+                      "perm": "drwx------",
+                      "user": "root",
+                      "group": "root",
+                      "size": 4096,
+                      "modified": "Jan 1 10:00",
+                      "children": {}
+                    }
+                  }
+                }
+              }
+            },
+            "systemd": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "spool": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "cron": {
+              "type": "dir",
+              "perm": "drwx-wx--T",
+              "user": "root",
+              "group": "crontab",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "crontabs": {
+                  "type": "dir",
+                  "perm": "drwx-wx--T",
+                  "user": "root",
+                  "group": "crontab",
+                  "size": 4096,
+                  "modified": "Jan 1 10:00",
+                  "children": {}
+                }
+              }
+            },
+            "mail": {
+              "type": "dir",
+              "perm": "drwxrwsr-x",
+              "user": "root",
+              "group": "mail",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {}
+            }
+          }
+        },
+        "mail": {
+          "type": "dir",
+          "perm": "drwxrwsr-x",
+          "user": "root",
+          "group": "mail",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "opt": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "tmp": {
+          "type": "dir",
+          "perm": "drwxrwxrwt",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "backups": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "www": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {
+            "html": {
+              "type": "dir",
+              "perm": "drwxr-xr-x",
+              "user": "root",
+              "group": "root",
+              "size": 4096,
+              "modified": "Jan 1 10:00",
+              "children": {
+                "index.html": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "www-data",
+                  "group": "www-data",
+                  "size": 500,
+                  "modified": "Jan 1 10:00",
+                  "content": "<!DOCTYPE html>\n<html>\n<head><title>Welcome to Ubuntu</title></head>\n<body><h1>Hello World</h1></body>\n</html>"
+                },
+                "index.nginx-debian.html": {
+                  "type": "file",
+                  "perm": "-rw-r--r--",
+                  "user": "root",
+                  "group": "root",
+                  "size": 612,
+                  "modified": "Jan 1 10:00",
+                  "content": "<!DOCTYPE html>\n<html>\n<head><title>Welcome to nginx!</title></head>\n<body><h1>Welcome to nginx!</h1></body>\n</html>"
+                }
+              }
+            }
+          }
+        },
+        "run": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        },
+        "lock": {
+          "type": "dir",
+          "perm": "drwxr-xr-x",
+          "user": "root",
+          "group": "root",
+          "size": 4096,
+          "modified": "Jan 1 10:00",
+          "children": {}
+        }
+      }
+    }
+  }
+}
