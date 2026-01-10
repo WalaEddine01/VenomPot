@@ -2,7 +2,7 @@ from dash import Dash, html, dash_table, dcc, Input, Output
 import dash_bootstrap_components as dbc
 import plotly.express as px
 from dash_bootstrap_templates import load_figure_template
-from dashboard_data_parser import parse_http_requests_log, parse_ftp_smb_log
+from dashboard_data_parser import parse_http_requests_log, parse_ftp_smb_log, parse_ssh_log
 from pathlib import Path
 import pandas as pd
 
@@ -13,6 +13,7 @@ import pandas as pd
 BASE_DIR = Path(__file__).resolve().parent
 HTTP_LOGS = BASE_DIR / "logs" / "http_logs.log"
 SMB_FTP_LOGS = BASE_DIR / "logs" / "ftp_smb_logs.log"
+SSH_LOGS = BASE_DIR / "logs" / "ssh_logs.log"
 
 # =========================
 # DASH SETUP
@@ -119,6 +120,43 @@ app.layout = dbc.Container(
                 "backgroundColor": "#222222",
             },
         ),
+        # =========================
+        # SSH SECTION
+        # =========================
+
+        html.H3(
+            "SSH Honeypot Data",
+            style={
+                "textAlign": "center",
+                "fontFamily": "Consolas",
+                "fontWeight": "bold",
+                "marginTop": "40px",
+            },
+        ),
+
+        dbc.Row(
+            [
+                dbc.Col(
+                    dcc.Graph(id="ssh-bar"),
+                    width=6,
+                ),
+            ],
+            justify="center",
+        ),
+
+        dash_table.DataTable(
+            id="ssh-table",
+            page_size=15,
+            style_cell={
+                "textAlign": "left",
+                "color": "#8dd143",
+                "backgroundColor": "#111111",
+            },
+            style_header={
+                "fontWeight": "bold",
+                "backgroundColor": "#222222",
+            },
+        ),
     ],
     fluid=True,
 )
@@ -131,11 +169,18 @@ app.layout = dbc.Container(
     Output("http-table", "data"),
     Output("http-table", "columns"),
     Output("ip-bar", "figure"),
+
     Output("smb-table", "data"),
     Output("smb-table", "columns"),
     Output("smb-bar", "figure"),
+
+    Output("ssh-table", "data"),
+    Output("ssh-table", "columns"),
+    Output("ssh-bar", "figure"),
+
     Input("refresh", "n_intervals"),
 )
+
 def refresh_dashboard(_):
     # =========================
     # HTTP
@@ -191,15 +236,60 @@ def refresh_dashboard(_):
             x="client_ip",
             y="count",
             title="Top FTP / SMB Attacker IPs",
+            color_discrete_sequence=["#77bb35"],
         )
+
+    # =========================
+    # SSH  ✅ ALWAYS EXECUTES
+    # =========================
+    df_ssh = parse_ssh_log(SSH_LOGS)
+    
+    ssh_columns = [{"name": c, "id": c} for c in df_ssh.columns]
+    ssh_data = df_ssh.to_dict("records")
+    
+    if not df_ssh.empty and "event" in df_ssh.columns and "client_ip" in df_ssh.columns:
+        df_ssh_login = df_ssh[df_ssh["event"] == "login"]
+    
+        if not df_ssh_login.empty:
+            vc_ssh = df_ssh_login["client_ip"].value_counts().head(10)
+            ssh_fig = px.bar(
+                pd.DataFrame({
+                    "client_ip": vc_ssh.index,
+                    "count": vc_ssh.values,
+                }),
+                x="client_ip",
+                y="count",
+                title="Top SSH Login Attempts",
+                color_discrete_sequence=["#77bb35"],
+            )
+        else:
+            ssh_fig = px.bar(
+                pd.DataFrame(columns=["client_ip", "count"]),
+                x="client_ip",
+                y="count",
+                title="Top SSH Login Attempts",
+            )
+    else:
+        ssh_fig = px.bar(
+            pd.DataFrame(columns=["client_ip", "count"]),
+            x="client_ip",
+            y="count",
+            title="Top SSH Login Attempts",
+        )
+    
 
     return (
         http_data,
         http_columns,
         http_fig,
+
         smb_data,
         smb_columns,
         smb_fig,
+
+        ssh_data,
+        ssh_columns,
+        ssh_fig,
     )
 # =========================
 # RUN APP

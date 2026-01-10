@@ -19,7 +19,7 @@ SSH_BANNER = "SSH-2.0-OpenSSH_8.9p1 Ubuntu-3ubuntu0.6"
 HOST_KEY = paramiko.RSAKey(filename="server.key") # Generate this using: ssh-keygen -t rsa -f server.key
 
 LISTEN_ADDR = "0.0.0.0"
-LISTEN_PORT = 21
+LISTEN_PORT = 2222
 
 USERNAME = "user"
 PASSWORD = "password"
@@ -81,7 +81,9 @@ def emulated_shell(channel, client_ip):
             channel.send(response.replace("\n", "\r\n") + "\r\n")
             
         # Log it
-        venom_logger.info(f"CMD | {client_ip} | {command}")
+        venom_logger.info(
+            f"event=cmd src_ip={client_ip} user={USERNAME} cmd=\"{command}\" result=executed"
+            )
 
 # ===================== SSH SERVER SETUP =====================
 
@@ -100,8 +102,17 @@ class Server(paramiko.ServerInterface):
         return "password"
 
     def check_auth_password(self, username, password):
-        venom_logger.info(f"LOGIN_ATTEMPT | {self.client_ip} | {username}:{password}")
-        if username == self.username and password == self.password:
+        success = (username == self.username and password == self.password)
+    
+        venom_logger.info(
+            f"event=login "
+            f"src_ip={self.client_ip} "
+            f"user={username} "
+            f"password=\"{password}\" "
+            f"result={'success' if success else 'failure'}"
+        )
+    
+        if success:
             return paramiko.AUTH_SUCCESSFUL
         return paramiko.AUTH_FAILED
 

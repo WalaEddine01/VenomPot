@@ -164,3 +164,45 @@ def parse_ftp_smb_log(log_file):
 
     df = pd.DataFrame(data)
     return df
+
+
+def parse_ssh_log(ssh_logs_file):
+    data = []
+
+    try:
+        with open(ssh_logs_file, "r", encoding="utf-8") as fh:
+            for line in fh:
+                if " - " not in line:
+                    continue
+
+                ts, msg = line.split(" - ", 1)
+                record = {"timestamp": ts}
+
+                for token in msg.split():
+                    if "=" in token:
+                        k, v = token.split("=", 1)
+                        record[k] = v.strip('"')
+
+                data.append({
+                    "timestamp": record.get("timestamp"),
+                    "event": record.get("event"),
+                    "client_ip": record.get("src_ip"),
+                    "user": record.get("user"),
+                    "password": record.get("password"),
+                    "command": record.get("cmd"),
+                    "result": record.get("result"),
+                })
+
+    except FileNotFoundError:
+        return pd.DataFrame(columns=[
+            "timestamp",
+            "event",
+            "client_ip",
+            "user",
+            "password",
+            "command",
+            "result",
+        ])
+
+    return pd.DataFrame(data)
+
