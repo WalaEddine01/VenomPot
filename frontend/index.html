@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>VenomPot - Honeypot Network Visualization</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: #0a0e14;
+        font-family: "Inter", sans-serif;
+        color: #fff;
+        overflow: hidden;
+      }
+
+      svg {
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(
+          ellipse at center,
+          #0f1419 0%,
+          #0a0e14 100%
+        );
+      }
+
+      /* Grid background effect */
+      .grid-pattern {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-image: linear-gradient(
+            rgba(0, 255, 100, 0.03) 1px,
+            transparent 1px
+          ),
+          linear-gradient(90deg, rgba(0, 255, 100, 0.03) 1px, transparent 1px);
+        background-size: 50px 50px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      svg {
+        position: relative;
+        z-index: 1;
+      }
+
+      .tooltip {
+        position: absolute;
+        padding: 12px 16px;
+        background: linear-gradient(135deg, #1a1f2e 0%, #141821 100%);
+        border: 1px solid #2a3f5f;
+        border-radius: 8px;
+        pointer-events: none;
+        color: #e0e0e0;
+        font-size: 13px;
+        opacity: 0;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5),
+          0 0 20px rgba(0, 255, 100, 0.1);
+        backdrop-filter: blur(10px);
+        font-family: "Fira Code", monospace;
+        max-width: 280px;
+        z-index: 1000;
+      }
+
+      .tooltip strong {
+        color: #00ff64;
+      }
+      .tooltip .risk-high {
+        color: #ff4444;
+      }
+      .tooltip .risk-medium {
+        color: #ffaa00;
+      }
+      .tooltip .risk-low {
+        color: #44ff44;
+      }
+      .tooltip .label {
+        color: #888;
+        font-size: 11px;
+      }
+
+      /* Stats Panel */
+      .stats-panel {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 31, 46, 0.95) 0%,
+          rgba(20, 24, 33, 0.95) 100%
+        );
+        border: 1px solid #2a3f5f;
+        border-radius: 12px;
+        padding: 20px;
+        min-width: 220px;
+        z-index: 100;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(10px);
+      }
+
+      .stats-panel h2 {
+        margin: 0 0 15px 0;
+        font-size: 14px;
+        color: #00ff64;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "Fira Code", monospace;
+      }
+
+      .stats-panel h2::before {
+        content: "◉";
+        animation: pulse-dot 2s infinite;
+      }
+
+      @keyframes pulse-dot {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.3;
+        }
+      }
+
+      .stat-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        font-size: 13px;
+      }
+
+      .stat-item:last-child {
+        border-bottom: none;
+      }
+      .stat-label {
+        color: #888;
+      }
+      .stat-value {
+        color: #fff;
+        font-weight: 600;
+        font-family: "Fira Code", monospace;
+      }
+      .stat-value.danger {
+        color: #ff4444;
+      }
+      .stat-value.warning {
+        color: #ffaa00;
+      }
+      .stat-value.success {
+        color: #00ff64;
+      }
+
+      /* Legend */
+      .legend {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 31, 46, 0.95) 0%,
+          rgba(20, 24, 33, 0.95) 100%
+        );
+        border: 1px solid #2a3f5f;
+        border-radius: 12px;
+        padding: 15px 20px;
+        z-index: 100;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .legend h3 {
+        margin: 0 0 12px 0;
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 5px 0;
+        font-size: 12px;
+      }
+
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+      }
+
+      /* Activity Feed */
+      .activity-feed {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 320px;
+        max-height: 400px;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 31, 46, 0.95) 0%,
+          rgba(20, 24, 33, 0.95) 100%
+        );
+        border: 1px solid #2a3f5f;
+        border-radius: 12px;
+        overflow: hidden;
+        z-index: 100;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .activity-header {
+        padding: 15px 20px;
+        border-bottom: 1px solid #2a3f5f;
+        font-size: 14px;
+        font-weight: 600;
+        color: #00ff64;
+        font-family: "Fira Code", monospace;
+      }
+
+      .activity-list {
+        max-height: 340px;
+        overflow-y: auto;
+        padding: 10px;
+      }
+
+      .activity-list::-webkit-scrollbar {
+        width: 6px;
+      }
+      .activity-list::-webkit-scrollbar-track {
+        background: #1a1f2e;
+      }
+      .activity-list::-webkit-scrollbar-thumb {
+        background: #3a4f6f;
+        border-radius: 3px;
+      }
+
+      .activity-item {
+        padding: 10px 12px;
+        margin-bottom: 8px;
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 8px;
+        border-left: 3px solid #00ff64;
+        font-size: 12px;
+        animation: slide-in 0.3s ease-out;
+      }
+
+      .activity-item.risk-high {
+        border-left-color: #ff4444;
+      }
+      .activity-item.risk-medium {
+        border-left-color: #ffaa00;
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          transform: translateX(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      .activity-ip {
+        color: #00ff64;
+        font-family: "Fira Code", monospace;
+      }
+      .activity-time {
+        color: #666;
+        font-size: 10px;
+      }
+      .activity-cmd {
+        color: #aaa;
+        font-family: "Fira Code", monospace;
+        margin-top: 4px;
+      }
+
+      /* Node glow effects */
+      .risk-glow {
+        filter: drop-shadow(0 0 8px rgba(255, 68, 68, 0.8));
+      }
+
+      .node-pulse {
+        animation: node-pulse-anim 2s infinite;
+      }
+
+      @keyframes node-pulse-anim {
+        0%,
+        100% {
+          filter: drop-shadow(0 0 4px currentColor);
+        }
+        50% {
+          filter: drop-shadow(0 0 15px currentColor);
+        }
+      }
+
+      /* Connection status */
+      .connection-status {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        background: linear-gradient(
+          135deg,
+          rgba(26, 31, 46, 0.95) 0%,
+          rgba(20, 24, 33, 0.95) 100%
+        );
+        border: 1px solid #2a3f5f;
+        border-radius: 8px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 100;
+      }
+
+      .connection-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #ff4444;
+      }
+
+      .connection-dot.connected {
+        background: #00ff64;
+        box-shadow: 0 0 10px #00ff64;
+      }
+
+      /* Link styles */
+      .link-tor {
+        stroke: #d000ff !important;
+      }
+      .link-vpn {
+        stroke: #ff4444 !important;
+      }
+      .link-hosting {
+        stroke: #ffaa00 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid-pattern"></div>
+    <svg></svg>
+    <div class="tooltip"></div>
+
+    <!-- Stats Panel -->
+    <div class="stats-panel">
+      <h2>LIVE MONITORING</h2>
+      <div class="stat-item">
+        <span class="stat-label">Total Attackers</span>
+        <span class="stat-value" id="stat-attackers">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Countries</span>
+        <span class="stat-value" id="stat-countries">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">High Risk</span>
+        <span class="stat-value danger" id="stat-high-risk">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">TOR Nodes</span>
+        <span class="stat-value warning" id="stat-tor">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Commands</span>
+        <span class="stat-value" id="stat-commands">0</span>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <h3>Network Types</h3>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #00ff64"></div>
+        <span>Honeypot Server</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #3fa9f5"></div>
+        <span>Country Node</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #d000ff"></div>
+        <span>TOR Exit Node</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #ff4444"></div>
+        <span>VPN / Proxy</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #ffaa00"></div>
+        <span>Hosting / Cloud</span>
+      </div>
+      <div class="legend-item">
+        <div class="legend-dot" style="background: #4caf50"></div>
+        <span>Residential</span>
+      </div>
+    </div>
+
+    <!-- Activity Feed -->
+    <div class="activity-feed">
+      <div class="activity-header">>> Live Activity</div>
+      <div class="activity-list" id="activity-list"></div>
+    </div>
+
+    <!-- Connection Status -->
+    <div class="connection-status">
+      <div class="connection-dot" id="connection-dot"></div>
+      <span id="connection-text">Connecting...</span>
+    </div>
+
+    <script src="graph.js"></script>
+  </body>
+</html>

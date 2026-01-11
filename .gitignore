@@ -1,0 +1,29 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs (keep folder, ignore contents)
+logs/*.json
+!logs/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# SSH keys (generated)
+honeypot_host_key
+
+# Large binary files (optional - uncomment if you don't want to track)
+# *.mmdb
