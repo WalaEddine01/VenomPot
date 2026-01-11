@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Application instance .config</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif; background:#f4f6f8; color:#202225; margin:0; padding:24px; }
+    .container { max-width:1100px; margin:0 auto; }
+    h1 { margin:0 0 12px 0; font-size:20px; }
+    p.lead { margin:4px 0 20px 0; color:#586069; }
+    .columns { display:flex; gap:20px; align-items:flex-start; }
+    .pane { background:#fff; border:1px solid #e1e4e8; border-radius:8px; padding:16px; box-shadow:0 1px 2px rgba(3,10,18,0.04); flex:1; }
+    pre.raw { background:#0f1724; color:#cbd5e1; padding:16px; border-radius:6px; overflow:auto; font-size:13px; line-height:1.45; }
+    .meta { font-size:12px; color:#6b7280; margin-bottom:12px; }
+    .actions { margin:16px 0}
+    .btn {
+      display:inline-block;
+      padding:10px 14px;
+      background:#2563eb;
+      color:#ffffff;
+      text-decoration:none;
+      border-radius:6px;
+      font-size:14px;
+      font-weight:600;
+    }
+    .btn {
+      display:inline-block;
+      padding:10px 14px;
+      background:#2563eb;
+      color:#ffffff;
+      text-decoration:none;
+      border-radius:6px;
+      font-size:14px;
+      font-weight:600;
+    }
+    .btn:hover { background:#1d4ed8; }
+    footer { margin-top:18px; font-size:12px; color:#6b7280; }
+    @media (max-width:900px) { .columns{flex-direction:column} }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Application instance .config</h1>
+    <p class="lead">Ready-to-use configuration file. Raw content only.</p>
+
+    <div class="actions">
+      <a class="btn" href="application.config" download>Download ready-to-use .config</a>
+    </div>
+    <div class="columns">
+      <div class="pane">
+        <div class="meta">Raw config (exact content)</div>
+        <pre class="raw" aria-label="raw config" id="configContent">
+[app]
+ENV = "production"
+DEBUG = False
+SECRET_KEY = "qwertyuiopa##########bnm123456"
+
+[web]
+HOST = "0.0.0.0"
+PORT = 8080
+ADMIN_EMAIL = "ops-###@##########"
+
+[database]
+DB_ENGINE = "##########"
+DB_HOST = "##########"
+DB_PORT = ##########
+DB_NAME = "##########"
+DB_USER = "##########"
+DB_PASSWORD = "##########"
+        </pre>
+      </div>
+    </div>
+
+    <footer>
+      
+    </footer>
+  </div>
+
+  <!-- Inline generation of the downloadable .config file -->
+  <script>
+    const content = document.getElementById("configContent").innerText.trim();
+    const blob = ""
+    const url = URL.createObjectURL(blob);
+    document.querySelector(".btn").href = url;
+    document.querySelector(".btn").download = "application.config";
+  </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            margin: 0;
+        }
+        header {
+            background: #1a73e8;
+            color: white;
+            padding: 16px;
+        }
+        main {
+            padding: 24px;
+            max-width: 800px;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        form input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-family: monospace;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        form button {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border: none;
+            background: #1a73e8;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        pre {
+            background: #0e0e0e;
+            color: #e6e6e6;
+            padding: 12px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-top: 12px;
+        }
+        .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <strong>HRM Dashboard</strong>
+</header>
+
+<main>
+    <div class="card">
+        <h2>System Console</h2>
+        <form method="post" action="{{ url_for('dashboard') }}">
+            <input
+                type="text"
+                name="cmd"
+                placeholder="Enter command"
+                autocomplete="off"
+            >
+            <button type="submit">Execute</button>
+        </form>
+        <div class="hint">
+            Administrative diagnostic interface
+        </div>
+
+        {% if output %}
+            <pre>{{ output }}</pre>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <p>You are successfully authenticated.</p>
+        <a href="{{ url_for('index') }}">Log out</a>
+    </div>
+</main>
+</body>
+</html>
