@@ -1,6 +1,6 @@
 
 
-# VenomPot 🐍🍯
+[![VenomPot Logo](https://github.com/WalaEddine01/VenomPot/blob/main/assets/images/honeypy-logo-white.png)](https://github.com/WalaEddine01/VenomPot)
 
 **A High-Interaction Multi-Protocol Honeypot & Monitoring Dashboard**
 
